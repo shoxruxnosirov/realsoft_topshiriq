@@ -1,13 +1,25 @@
-// import { PartialType } from '@nestjs/mapped-types';
-// import { CreateRoleDto } from './create-role.dto';
-
-// export class UpdateRoleDto extends PartialType(CreateRoleDto) {}
-import { Role } from "../entities/role.entity";
+import { IsOptional, IsEnum, IsString, IsBoolean } from 'class-validator';
+import { UserRole } from 'src/comman/types';
 
 export class UpdateRoleDto {
-  role?: Role;
+  @IsOptional()
+  @IsEnum(UserRole, { message: 'Noto‘g‘ri role turi kiritildi' })
+  role?: UserRole;
+
+  @IsOptional()
+  @IsString({ message: 'Name matn bo‘lishi kerak' })
   name?: string;
+
+  @IsOptional()
+  @IsString({ message: 'Username matn bo‘lishi kerak' })
   username?: string;
+
+  @IsOptional()
+  @IsBoolean({ message: 'Status faqat true yoki false bo‘lishi kerak' })
   status?: boolean;
+
+  @IsOptional()
+  // Agar bu raqam bo'lishi kerak bo'lsa:
+  // @IsInt()
   updatedBy?: number;
 }
