@@ -1,4 +1,4 @@
-import { IsOptional, IsEnum, IsString, IsBoolean } from 'class-validator';
+import { IsOptional, IsEnum, IsString, IsBoolean, MinLength } from 'class-validator';
 import { UserRole } from 'src/comman/types';
 
 export class UpdateRoleDto {
@@ -14,9 +14,9 @@ export class UpdateRoleDto {
   @IsString({ message: 'Username matn bo‘lishi kerak' })
   username?: string;
 
-  @IsOptional()
-  @IsBoolean({ message: 'Status faqat true yoki false bo‘lishi kerak' })
-  status?: boolean;
+  @IsString()
+  @MinLength(4, { message: 'Password kamida 4 ta belgidan iborat bo‘lishi kerak' })
+  password: string;
 
   @IsOptional()
   // Agar bu raqam bo'lishi kerak bo'lsa:

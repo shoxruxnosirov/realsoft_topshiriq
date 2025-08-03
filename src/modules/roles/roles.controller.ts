@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Put, Delete, HttpCode, UseGuards, Req, Query, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Put, Delete, HttpCode, UseGuards, Req, Query, ParseIntPipe, Patch } from '@nestjs/common';
 import { RolesService } from './roles.service';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
@@ -99,12 +99,44 @@ export class RolesController {
     required: false,
     description: 'Sahifa o‘lchami (default: 4)',
   })
-  async findAll2(
+  async search(
     @Query('search') search: string = '',
     @Query('page', new ParseIntPipe({ optional: true })) page = 1,
     @Query('pageSize', new ParseIntPipe({ optional: true })) pageSize = 4,
   ): Promise<PaginatedResponse<Omit<Role, "password">>> {
     return this.rolesService.search(search, Number(page), Number(pageSize));
+  }
+
+  @Get('search2')
+  @UseGuards(RolesGuard)
+  @Roles(UserRole.ADMIN)
+  @ApiOperation({ summary: 'search users (roles) (admin only)' })
+  @ApiBearerAuth()
+  @ApiQuery({
+    name: 'search',
+    type: String,
+    required: false,
+    description: 'Qidiruv matni (masalan: user)',
+    example: 'user',
+  })
+  @ApiQuery({
+    name: 'page',
+    type: Number,
+    required: false,
+    description: 'Sahifa raqami (default: 1)',
+  })
+  @ApiQuery({
+    name: 'pageSize',
+    type: Number,
+    required: false,
+    description: 'Sahifa o‘lchami (default: 4)',
+  })
+  async search2(
+    @Query('search') search: string = '',
+    @Query('page', new ParseIntPipe({ optional: true })) page = 1,
+    @Query('pageSize', new ParseIntPipe({ optional: true })) pageSize = 4,
+  ): Promise<PaginatedResponse<Omit<Role, "password">>> {
+    return this.rolesService.searchWithSubQuery(search, Number(page), Number(pageSize));
   }
 
   @Get(':id')
@@ -143,6 +175,25 @@ export class RolesController {
     return this.rolesService.update(+id, dto, req.user.id);
   }
 
+  @Patch('me')
+  @UseGuards(RolesGuard)
+  @Roles(UserRole.ADMIN, UserRole.USER)
+  @ApiOperation({ summary: 'Update own profile' })
+  @ApiBearerAuth()
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        name: { default: 'user_123', type: 'string', description: 'new user name' },
+        username: { default: 'new_user', type: 'string', description: 'new user username' },
+        password: { default: 'New_user_pass_123', type: 'string', description: 'new admin password' },
+      }
+    },
+  })
+  updateOwnProfile( @Body() dto: UpdateRoleDto, @Req() req: GuardRequest) {
+    return this.rolesService.updateOwnProfile(req.user.id, dto, req.user.id);
+  }
+
   @Delete(':id')
   @UseGuards(RolesGuard)
   @Roles(UserRole.ADMIN)
@@ -150,7 +201,7 @@ export class RolesController {
   @ApiBearerAuth()
   @ApiParam({ name: 'userId', description: 'User ID', type: 'string' })
   @HttpCode(204)
-  async remove(@Param('id', new ParseIntPipe({ optional: true })) id: string): Promise<void> {
+  async remove(@Param('userId', new ParseIntPipe({ optional: true })) id: string): Promise<void> {
     await this.rolesService.remove(+id);
   }
 
