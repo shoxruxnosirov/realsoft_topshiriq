@@ -26,6 +26,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzU0MjgzNjU2LCJleHAiOjE3NTQzMjY4NTZ9.AU3VaRL4KahGavm5nlgENlzVvzHKqq2poNJ0cDoqfzo",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -35,15 +45,13 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"username\": \"admin\",\n  \"password\": \"admin\"\n}"
+							"raw": "{\n  \"username\": \"new_user1\",\n  \"password\": \"New_user_pass_123\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:3000/roles/login",
-							"protocol": "http",
+							"raw": "{{base_url}}/roles/login",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "3000",
 							"path": [
 								"roles",
 								"login"
@@ -86,12 +94,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/roles",
-							"protocol": "http",
+							"raw": "{{base_url}}/roles",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "3000",
 							"path": [
 								"roles"
 							]
@@ -127,12 +133,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/roles",
-							"protocol": "http",
+							"raw": "{{base_url}}/roles",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "3000",
 							"path": [
 								"roles"
 							],
@@ -177,12 +181,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/roles/search?search=us er&pageSize=4&page=1",
-							"protocol": "http",
+							"raw": "{{base_url}}/roles/search?search=us er&pageSize=4&page=1",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "3000",
 							"path": [
 								"roles",
 								"search"
@@ -223,12 +225,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/roles/2",
-							"protocol": "http",
+							"raw": "{{base_url}}/roles/2",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "3000",
 							"path": [
 								"roles",
 								"2"
@@ -262,12 +262,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/roles/2",
-							"protocol": "http",
+							"raw": "{{base_url}}/roles/2",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "3000",
 							"path": [
 								"roles",
 								"2"
@@ -285,24 +283,32 @@
 								"exec": [
 									""
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzU0MjgzNjU2LCJleHAiOjE3NTQzMjY4NTZ9.AU3VaRL4KahGavm5nlgENlzVvzHKqq2poNJ0cDoqfzo",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "https://api.getpostman.com/collections/{{collectionId}}",
-							"protocol": "https",
+							"raw": "{{base_url}}/roles/2",
 							"host": [
-								"api",
-								"getpostman",
-								"com"
+								"{{base_url}}"
 							],
 							"path": [
-								"collections",
-								"{{collectionId}}"
+								"roles",
+								"2"
 							]
 						},
 						"description": "Deletes a collection."
@@ -336,12 +342,10 @@
 							"raw": "{\n  \"name\": \"user_123\",\n  \"username\": \"new_user\",\n  \"password\": \"New_user_pass_123\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:3000/roles/me",
-							"protocol": "http",
+							"raw": "{{base_url}}/roles/me",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "3000",
 							"path": [
 								"roles",
 								"me"
@@ -367,12 +371,10 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/roles/refreshtoken",
-							"protocol": "http",
+							"raw": "{{base_url}}/roles/refreshtoken",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "3000",
 							"path": [
 								"roles",
 								"refreshtoken"
@@ -395,7 +397,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzU0Mjg1OTIxLCJleHAiOjE3NTQzNzIzMjF9.qROS2yKD02RiBu6OZ0coyGKxCCw1IQh0QFKgRI2P3b8",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwicm9sZSI6InVzZXIiLCJpYXQiOjE3NTQyODY3MTMsImV4cCI6MTc1NDMyOTkxM30.FKgsCH7yP_-p0Uh1jX8a5FkHNYsmo-2yOZhB1dMovKo",
 									"type": "string"
 								}
 							]
@@ -404,7 +406,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Ali Valiyev\",\n  \"status\": true\n}",
+							"raw": "{\n  \"name\": \"Ali Valiyev\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -412,14 +414,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/roles",
-							"protocol": "http",
+							"raw": "{{base_url}}/customers",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "3000",
 							"path": [
-								"roles"
+								"customers"
 							]
 						}
 					},
@@ -441,12 +441,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/customers?pageSize=10&page=1",
-							"protocol": "http",
+							"raw": "{{base_url}}/customers?pageSize=10&page=1",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "3000",
 							"path": [
 								"customers"
 							],
@@ -467,8 +465,42 @@
 				{
 					"name": "Search customers by name (user and admin)",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwicm9sZSI6InVzZXIiLCJpYXQiOjE3NTQyODY3MTMsImV4cCI6MTc1NDMyOTkxM30.FKgsCH7yP_-p0Uh1jX8a5FkHNYsmo-2yOZhB1dMovKo",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/customers/search?search=ali &pageSize=4&page=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"customers",
+								"search"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "ali "
+								},
+								{
+									"key": "pageSize",
+									"value": "4"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -488,12 +520,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/customers/1",
-							"protocol": "http",
+							"raw": "{{base_url}}/customers/1",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "3000",
 							"path": [
 								"customers",
 								"1"
@@ -527,12 +557,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/customers/1",
-							"protocol": "http",
+							"raw": "{{base_url}}/customers/1",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "3000",
 							"path": [
 								"customers",
 								"1"
@@ -557,12 +585,10 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/customers/1",
-							"protocol": "http",
+							"raw": "{{base_url}}/customers/1",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "3000",
 							"path": [
 								"customers",
 								"1"

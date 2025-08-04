@@ -6,15 +6,7 @@ export class CreateCustomerDto {
     example: 'Ali Valiyev',
     description: 'Customer name',
   })
-  @IsNotEmpty()
-  @IsString()
+  @IsString({ message: 'Name must be a string' })
+  @IsNotEmpty({ message: 'Name must not be empty' })
   name: string;
-
-  @ApiProperty({
-    example: true,
-    description: 'Customer status (active or not)',
-  })
-  @IsNotEmpty()
-  @IsBoolean()
-  status: boolean;
 }

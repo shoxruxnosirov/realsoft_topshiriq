@@ -14,7 +14,7 @@ export class Customer {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ default: true })
   status: boolean;
 
   @Column({ nullable: true })
