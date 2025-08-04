@@ -8,20 +8,23 @@ import {
 
 @Entity('customers')
 export class Customer {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Column()
   name: string;
 
+  @Column()
+  status: boolean;
+
   @Column({ nullable: true })
-  createdBy: string;
+  createdBy: number;
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
 
   @Column({ nullable: true })
-  updatedBy: string;
+  updatedBy: number;
 
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: Date;

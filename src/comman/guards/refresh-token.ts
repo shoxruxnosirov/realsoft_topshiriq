@@ -30,7 +30,7 @@ import { RolesService } from 'src/modules/roles/roles.service';
       const token = request.headers.authorization?.split(' ')[1];
   
       if (!token) {
-        throw new UnauthorizedException('Token topilmadi');
+        throw new UnauthorizedException('Token not provided');
       }
   
       try {
@@ -56,12 +56,12 @@ import { RolesService } from 'src/modules/roles/roles.service';
         request.user = payload;
   
         if (!roles.includes(userRole)) {
-          throw new ForbiddenException("Sizga ruxsat yo'q");
+          throw new ForbiddenException("You do not have permission to access this resource");
         }
         return true;
       } catch (err: unknown) {
         if (err instanceof Error) {
-          throw new UnauthorizedException('Yaroqsiz token');
+          throw new UnauthorizedException('Invalid token');
         } else {
           throw err;
         }

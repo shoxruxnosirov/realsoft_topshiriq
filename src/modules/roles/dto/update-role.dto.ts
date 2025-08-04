@@ -3,23 +3,22 @@ import { UserRole } from 'src/comman/types';
 
 export class UpdateRoleDto {
   @IsOptional()
-  @IsEnum(UserRole, { message: 'Noto‘g‘ri role turi kiritildi' })
+  @IsEnum(UserRole, { message: 'Role must be either "admin" or "user"' })
   role?: UserRole;
 
   @IsOptional()
-  @IsString({ message: 'Name matn bo‘lishi kerak' })
+  @IsString({ message: 'Name must be a string' })
   name?: string;
 
   @IsOptional()
-  @IsString({ message: 'Username matn bo‘lishi kerak' })
+  @IsString({ message: 'Username must be a string' })
   username?: string;
 
   @IsString()
-  @MinLength(4, { message: 'Password kamida 4 ta belgidan iborat bo‘lishi kerak' })
+  @MinLength(4, { message: 'Password must be at least 4 characters long' })
   password: string;
 
   @IsOptional()
-  // Agar bu raqam bo'lishi kerak bo'lsa:
   // @IsInt()
   updatedBy?: number;
 }

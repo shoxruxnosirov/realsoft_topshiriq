@@ -32,7 +32,7 @@ export class RolesGuard implements CanActivate {
     const token = request.headers.authorization?.split(' ')[1];
 
     if (!token) {
-      throw new UnauthorizedException('Token topilmadi');
+      throw new UnauthorizedException('Token not provided');
     }
 
     try {
@@ -58,7 +58,7 @@ export class RolesGuard implements CanActivate {
       request.user = payload;
 
       if (!roles.includes(userRole)) {
-        throw new ForbiddenException("Sizga ruxsat yo'q");
+        throw new ForbiddenException("You do not have permission to access this resource");
       }
       return true;
     } catch (err: unknown) {
@@ -66,7 +66,7 @@ export class RolesGuard implements CanActivate {
         if (err instanceof ForbiddenException) {
           throw err;
         } else {
-          throw new UnauthorizedException('Yaroqsiz token');
+          throw new UnauthorizedException('Invalid token');
         }
       } else {
         throw err;

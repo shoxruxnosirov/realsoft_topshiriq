@@ -5,6 +5,7 @@ import { RolesModule } from './modules/roles/roles.module';
 import { CustomersModule } from './modules/customers/customers.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmConfig } from './database/data-source';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { typeOrmConfig } from './database/data-source';
     TypeOrmModule.forRoot(typeOrmConfig),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, JwtService],
+  exports: [JwtService]
 })
 export class AppModule {}

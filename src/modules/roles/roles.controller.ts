@@ -60,13 +60,13 @@ export class RolesController {
     name: 'page',
     type: Number,
     required: false,
-    description: 'Sahifa raqami (default: 1)',
+    description: 'page number (default: 1)',
   })
   @ApiQuery({
     name: 'pageSize',
     type: Number,
     required: false,
-    description: 'Sahifa o‘lchami (default: 4)',
+    description: 'page size (default: 4)',
   })
   async findAll(
     @Query('page', new ParseIntPipe({ optional: true })) page = 1,
@@ -84,52 +84,20 @@ export class RolesController {
     name: 'search',
     type: String,
     required: false,
-    description: 'Qidiruv matni (masalan: user)',
-    example: 'user',
+    description: 'Search query (e.g., user)',
+    example: 'us er',
   })
   @ApiQuery({
     name: 'page',
     type: Number,
     required: false,
-    description: 'Sahifa raqami (default: 1)',
+    description: 'page number (default: 1)',
   })
   @ApiQuery({
     name: 'pageSize',
     type: Number,
     required: false,
-    description: 'Sahifa o‘lchami (default: 4)',
-  })
-  async search(
-    @Query('search') search: string = '',
-    @Query('page', new ParseIntPipe({ optional: true })) page = 1,
-    @Query('pageSize', new ParseIntPipe({ optional: true })) pageSize = 4,
-  ): Promise<PaginatedResponse<Omit<Role, "password">>> {
-    return this.rolesService.search(search, Number(page), Number(pageSize));
-  }
-
-  @Get('search2')
-  @UseGuards(RolesGuard)
-  @Roles(UserRole.ADMIN)
-  @ApiOperation({ summary: 'search users (roles) (admin only)' })
-  @ApiBearerAuth()
-  @ApiQuery({
-    name: 'search',
-    type: String,
-    required: false,
-    description: 'Qidiruv matni (masalan: user)',
-    example: 'user',
-  })
-  @ApiQuery({
-    name: 'page',
-    type: Number,
-    required: false,
-    description: 'Sahifa raqami (default: 1)',
-  })
-  @ApiQuery({
-    name: 'pageSize',
-    type: Number,
-    required: false,
-    description: 'Sahifa o‘lchami (default: 4)',
+    description: 'Page size (default: 4)',
   })
   async search2(
     @Query('search') search: string = '',
@@ -144,13 +112,9 @@ export class RolesController {
   @Roles(UserRole.ADMIN)
   @ApiOperation({ summary: 'Get a user (role) by ID (Admin only)' })
   @ApiBearerAuth()
-  @ApiParam({
-    name: 'id',
-    type: 'string',
-    description: 'User ID',
-    example: '1',
-  })
-  findOne(@Param('id', new ParseIntPipe({ optional: true })) id: string): Promise<Omit<Role, "password">> {
+  @ApiParam({ name: 'id', description: 'User ID', type: 'number', example: 2 })
+
+  findOne(@Param('id', ParseIntPipe) id: number): Promise<Omit<Role, "password">> {
     return this.rolesService.findOne(+id);
   }
 
@@ -159,7 +123,7 @@ export class RolesController {
   @Roles(UserRole.ADMIN)
   @ApiOperation({ summary: 'Update an user (role) by ID (admin only)' })
   @ApiBearerAuth()
-  @ApiParam({ name: 'id', description: 'User (role) ID', type: 'string' })
+  @ApiParam({ name: 'id', description: 'Customer ID', type: 'number', example: 1 })
   @ApiBody({
     schema: {
       type: 'object',
@@ -171,8 +135,8 @@ export class RolesController {
       }
     },
   })
-  update(@Param('id', new ParseIntPipe({ optional: true })) id: string, @Body() dto: UpdateRoleDto, @Req() req: GuardRequest) {
-    return this.rolesService.update(+id, dto, req.user.id);
+  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateRoleDto, @Req() req: GuardRequest) {
+    return this.rolesService.update(id, dto, req.user.id);
   }
 
   @Patch('me')
@@ -190,7 +154,7 @@ export class RolesController {
       }
     },
   })
-  updateOwnProfile( @Body() dto: UpdateRoleDto, @Req() req: GuardRequest) {
+  updateOwnProfile(@Body() dto: UpdateRoleDto, @Req() req: GuardRequest) {
     return this.rolesService.updateOwnProfile(req.user.id, dto, req.user.id);
   }
 
@@ -199,9 +163,9 @@ export class RolesController {
   @Roles(UserRole.ADMIN)
   @ApiOperation({ summary: 'Delete an user by ID (admin only)' })
   @ApiBearerAuth()
-  @ApiParam({ name: 'userId', description: 'User ID', type: 'string' })
+  @ApiParam({ name: 'id', description: 'Customer ID', type: 'number', example: 1 })
   @HttpCode(204)
-  async remove(@Param('userId', new ParseIntPipe({ optional: true })) id: string): Promise<void> {
+  async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
     await this.rolesService.remove(+id);
   }
 

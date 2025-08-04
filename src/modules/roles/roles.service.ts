@@ -1,7 +1,7 @@
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
-import { Brackets, DataSource, Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import { Role } from './entities/role.entity';
 import { CreateRoleDto } from './dto/create-role.dto';
@@ -44,38 +44,6 @@ export class RolesService {
       take: pageSize,
       order: { id: 'ASC' },
     });
-
-    return {
-      data: data.map(role => {
-        const { password, ...roleWithoutPassword } = role;
-        return roleWithoutPassword;
-      }),
-      meta: {
-        total,
-        page,
-        pageSize,
-        pageCount: Math.ceil(total / pageSize),
-      },
-    };
-  }
-
-  async search(query: string, page = 1, pageSize = 10): Promise<PaginatedResponse<Omit<Role, "password">>> {
-    const skip = (page - 1) * pageSize;
-    console.log('query: ', query)
-
-    const [data, total] = await this.roleRepository
-      .createQueryBuilder('role')
-      .where('role.status = :status', { status: true })
-      .andWhere(
-        new Brackets((qb) => {
-          qb.where('role.name ILIKE :query', { query: `%${query}%` })
-            .orWhere('role.username ILIKE :query', { query: `%${query}%` })
-        }),
-      )
-      .skip(skip)
-      .take(pageSize)
-      .orderBy('role.id', 'ASC')
-      .getManyAndCount();
 
     return {
       data: data.map(role => {
@@ -143,15 +111,15 @@ export class RolesService {
   }
 
   async update(id: number, dto: UpdateRoleDto, updatedBy: number): Promise<Omit<Role, "password">> {
-    
-    if(dto.role === UserRole.ADMIN) {
+
+    if (dto.role === UserRole.ADMIN) {
       throw new ForbiddenException('You are not allowed to give this permission');
     }
-    
+
     const role = await this.roleRepository.findOne({ where: { id } });
     if (!role) throw new NotFoundException(`Role with ID ${id} not found`);
 
-    if(role.role === UserRole.ADMIN) {
+    if (role.role === UserRole.ADMIN) {
       throw new ForbiddenException(`You are not allowed to modify this user's data`);
     }
 
@@ -164,7 +132,7 @@ export class RolesService {
         throw new BadRequestException(`Username "${dto.username}" is already taken`);
       }
     }
-    if(dto.password) {
+    if (dto.password) {
       dto.password = await this.hashPassword(dto.password);
     }
 
@@ -175,7 +143,7 @@ export class RolesService {
     return roleWithoutPassword;
   }
 
-    async updateOwnProfile(id: number, dto: UpdateRoleDto, updatedBy: number): Promise<Omit<Role, "password">> {
+  async updateOwnProfile(id: number, dto: UpdateRoleDto, updatedBy: number): Promise<Omit<Role, "password">> {
     const role = await this.roleRepository.findOne({ where: { id } });
     if (!role) throw new NotFoundException(`Role with ID ${id} not found`);
 
@@ -188,8 +156,8 @@ export class RolesService {
         throw new BadRequestException(`Username "${dto.username}" is already taken`);
       }
     }
-    
-    if(dto.password) {
+
+    if (dto.password) {
       dto.password = await this.hashPassword(dto.password);
     }
 
@@ -211,7 +179,10 @@ export class RolesService {
 
   async login(roleDto: LoginRoleDto): Promise<Tokens> {
     const role = await this.roleRepository.findOne({
-      where: { username: roleDto.username },
+      where: {
+        username: roleDto.username,
+        status: true,
+      },
     });
 
     if (!role) {
