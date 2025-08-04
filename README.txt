@@ -33,7 +33,9 @@ realsoft-topshiriq/
 │   │       ├── customers.module.ts       # Modul fayli
 │   │       ├── dto/                      # DTO fayllar
 │   │       └── entities/                 # Entity fayllar
-│   └── common/                             # Umumiy util, guard, decorator va boshqalar
+│   └── common/                             # Umumiy util, guard, decorator, middleware va boshqalar
+│       └── middlewares/
+│           └── middleware.logging.ts      # Har bir so‘rov va javob uchun logging middleware
 │
 ├── test/                                   # Test fayllari (unit va e2e)
 │
@@ -59,6 +61,8 @@ realsoft-topshiriq/
 - **bcrypt** — parollarni xesh qilish
 - **Swagger** — API hujjatlari (http://localhost:3000/api)
 - **Postman** — API test va hujjatlash uchun (loyihada .postman_collection.json fayli mavjud)
+- **NestJS Logger** — log yozuvlari uchun
+- **Custom Logging Middleware** — har bir so‘rov va javobni log qilish uchun
 
 ---
 
@@ -90,6 +94,7 @@ DB_PORT=5432
 DB_USERNAME=realsoft_user
 DB_PASSWORD=password123
 DB_DATABASE=realsoft_db
+JWT_SECRET=your_jwt_secret
 ```
 
 ### 4. Loyihani o‘rnatish
@@ -102,7 +107,7 @@ npm install
 
 ```bash
 npm run build
-npopm run migration:generate
+npm run migration:generate   # (Agar yangi migratsiya kerak bo‘lsa)
 npm run migration:run
 npm run seed
 ```
@@ -120,7 +125,6 @@ npm run start
 Brauzerda oching:  
 http://localhost:3000/api
 
-
 ### 8. Testlar
 
 ```bash
@@ -131,6 +135,27 @@ npm run test:e2e
 ### 9. Postman kolleksiyasi
 
 - `realsoft_topshiriq.postman_collection.json` faylini Postman'ga import qilib, barcha API endpointlarini test qilishingiz mumkin.
+
+---
+
+## Logging (log yozuvlari)
+
+Loyihada **custom logging middleware** (`src/common/middlewares/middleware.logging.ts`) mavjud. Bu middleware har bir HTTP so‘rov va javob haqida quyidagi ma’lumotlarni terminalga chiqaradi:
+
+- So‘rov methodi va URL (masalan, `POST /roles`)
+- So‘rov headerlari, query va body’si
+- Javob status kodi va ishlash vaqti (ms)
+
+**Log namunasi:**
+```
+REQUEST: POST /roles
+Headers: {...}
+Query: {...}
+Body: {...}
+RESPONSE: Status 201 - 15ms
+```
+
+Bu loglar yordamida siz har bir so‘rov va javobni to‘liq kuzatishingiz mumkin.
 
 ---
 
@@ -177,5 +202,19 @@ password: admin
 - Guard va Decoratorlar orqali ruxsatlar va autentifikatsiya amalga oshiriladi.
 - Swagger orqali barcha endpointlarni ko‘rib chiqish va test qilish mumkin.
 - Postman kolleksiyasi orqali barcha endpointlarni tezda test qilish mumkin.
+- Logging middleware yordamida barcha so‘rov va javoblar terminalda to‘liq log qilinadi.
 
 ---
+
+## Foydali havolalar
+
+- [NestJS hujjatlari](https://docs.nestjs.com/)
+- [TypeORM hujjatlari](https://typeorm.io/)
+- [PostgreSQL hujjatlari](https://www.postgresql.org/docs/)
+- [Swagger UI](http://localhost:3000/api)
+
+---
+
+## Muammo yoki savollar bo‘lsa
+
+README.txt faylini yangilang yoki loyiha muallifiga murojaat
